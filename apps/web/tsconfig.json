@@ -1,5 +1,16 @@
+
 {
-  "files": [],
+  "extends": "../../tsconfig.base.json",
+
+  "compilerOptions": {
+    "jsx": "react-jsx",
+
+    "rootDir": "./src",
+
+    "baseUrl": "."
+  },
+
+  "include": ["src"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

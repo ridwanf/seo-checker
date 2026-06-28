@@ -11,6 +11,6 @@ export class AuditController {
 
   @Post()
   async create(@Body() dto: CreateAuditDto) {
-    return this.auditService.test(dto.url);
+    return this.auditService.create(dto);
   }
 }

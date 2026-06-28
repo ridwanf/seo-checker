@@ -1,6 +1,6 @@
 import { load } from "cheerio";
-import { AuditCheck } from "packages/shared-types/src/audit.js";
-import { SeoRule, SeoRuleContext } from "packages/shared-types/src/rule.js";
+import { AuditCheck } from '@seo-checker/shared-types';
+import { SeoRule, SeoRuleContext } from '@seo-checker/shared-types';
 
 export class MetaDescriptionLengthRule implements SeoRule {
   id = "meta-description-length";

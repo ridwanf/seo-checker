@@ -9,6 +9,7 @@
     "test": "turbo test"
   },
   "devDependencies": {
+    "tsup": "^8.5.1",
     "tsx": "^4.22.4",
     "turbo": "^2.0.0"
   }

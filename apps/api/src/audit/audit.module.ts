@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AuditController } from './audit.controller';
 import { AuditService } from './audit.service';
 import { CrawlerModule } from '../crawler/crawler.module';
+import { SeoModule } from '../seo/seo.module';
 
 @Module({
-  imports: [CrawlerModule],
+  imports: [CrawlerModule, SeoModule],
   controllers: [AuditController],
   providers: [AuditService],
 })
