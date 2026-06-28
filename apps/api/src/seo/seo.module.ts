@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SeoService } from './seo.service';
+import { SeoService } from './seo.service.js';
 
 @Module({
   providers: [SeoService],

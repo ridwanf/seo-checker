@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuditModule } from './audit/audit.module';
-import { CrawlerModule } from './crawler/crawler.module';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { AuditModule } from './audit/audit.module.js';
+import { CrawlerModule } from './crawler/crawler.module.js';
+import { SeoModule } from './seo/seo.module.js';
 
 @Module({
-  imports: [AuditModule, CrawlerModule],
+  imports: [AuditModule, CrawlerModule, SeoModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+// eslint-disable-next-line prettier/prettier
+export class AppModule { }

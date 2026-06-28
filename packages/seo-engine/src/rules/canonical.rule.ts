@@ -1,4 +1,5 @@
 import {
+  AuditCategory,
   AuditCheck,
   SeoRule,
   SeoRuleContext,
@@ -11,7 +12,7 @@ export class CanonicalRule
   id = 'canonical';
 
   name = 'Canonical URL';
-
+  category: AuditCategory = 'technical';
   weight = 10;
 
   async execute(
@@ -29,7 +30,7 @@ export class CanonicalRule
     return {
       id: this.id,
       name: this.name,
-      category: 'technical',
+      category: this.category,
       status: exists
         ? 'pass'
         : 'warning',

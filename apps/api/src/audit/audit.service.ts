@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CrawlerService } from '../crawler/crawler.service';
-import { SeoService } from '../seo/seo.service';
-import { CreateAuditDto } from './dto/create-audit.dto';
-import { AuditReport } from '../../../../packages/shared-types/src';
+import { CrawlerService } from '../crawler/crawler.service.js';
+import { SeoService } from '../seo/seo.service.js';
+import { CreateAuditDto } from './dto/create-audit.dto.js';
+import { AuditReport } from '@seo-checker/shared-types';
 
 @Injectable()
 export class AuditService {

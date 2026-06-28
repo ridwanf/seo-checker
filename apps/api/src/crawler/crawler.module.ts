@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CrawlerService } from './crawler.service';
+import { CrawlerService } from './crawler.service.js';
 
 @Module({
   providers: [CrawlerService],

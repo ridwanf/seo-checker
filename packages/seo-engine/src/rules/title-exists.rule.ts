@@ -1,4 +1,5 @@
 import {
+  AuditCategory,
   AuditCheck,
   SeoRule,
   SeoRuleContext,
@@ -9,6 +10,7 @@ import { load } from 'cheerio';
 export class TitleExistsRule implements SeoRule {
   id = "title-exists";
   name = "Title Exists";
+  category: AuditCategory = "metadata";
   weight = 10;
 
   async execute(
@@ -23,6 +25,7 @@ export class TitleExistsRule implements SeoRule {
     return {
       id: this.id,
       name: this.name,
+      category: this.category,
       status: passed ? 'pass' : 'fail',
       score: passed ? 10 : 0,
       maxScore: 10,

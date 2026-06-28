@@ -1,4 +1,5 @@
 import {
+  AuditCategory,
   AuditCheck,
   SeoRule,
   SeoRuleContext,
@@ -11,7 +12,7 @@ export class H1ExistsRule
   id = 'h1-exists';
 
   name = 'H1 Exists';
-
+  category: AuditCategory = 'technical';
   weight = 10;
 
   async execute(
@@ -39,7 +40,7 @@ export class H1ExistsRule
       return {
         id: this.id,
         name: this.name,
-        category: 'content',
+        category: this.category,
         status: 'warning',
         score: 5,
         maxScore: 10,

@@ -1,14 +1,19 @@
 {
   "name": "@seo-checker/seo-engine",
   "version": "1.0.0",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
   "dependencies": {
     "@seo-checker/shared-types": "workspace:*",
-    "cheerio": "^1.2.0"
+    "cheerio": "^1.0.0"
   },
-  "scripts": {
-    "example": "tsx examples/basic.ts"
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "typescript": "^5.7.3"
   }
 }

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuditController } from './audit.controller';
-import { AuditService } from './audit.service';
-import { CrawlerModule } from '../crawler/crawler.module';
-import { SeoModule } from '../seo/seo.module';
+import { AuditController } from './audit.controller.js';
+import { AuditService } from './audit.service.js';
+import { CrawlerModule } from '../crawler/crawler.module.js';
+import { SeoModule } from '../seo/seo.module.js';
 
 @Module({
   imports: [CrawlerModule, SeoModule],

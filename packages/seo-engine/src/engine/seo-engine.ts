@@ -10,7 +10,7 @@ import { H1ExistsRule } from '../rules/h1-exists.rule.js';
 import { MetaDescriptionExistsRule } from '../rules/meta-description-exists.rule.js';
 import { MetaDescriptionLengthRule } from '../rules/meta-description-length.rule.js';
 import { TitleLengthRule } from '../rules/title-length.rule.js';
-import { load } from 'cheerio';
+import * as cheerio from 'cheerio';
 
 export class SeoEngine {
   private readonly rules: SeoRule[]
@@ -29,7 +29,7 @@ export class SeoEngine {
     url: string,
     html: string
   ): Promise<AuditReport> {
-    const $ = load(html);
+    const $ = cheerio.load(html);
 
     const checks: AuditCheck[] = [];
 
