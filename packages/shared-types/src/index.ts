@@ -1,3 +1,3 @@
-export * from './audit.js';
-export * from './rule.js';
-export * from './report.js';
+export * from './audit';
+export * from './report';
+export * from './rule';

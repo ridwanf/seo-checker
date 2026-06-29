@@ -73,3 +73,17 @@ pnpm lint
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+# From root
+rm -rf apps/api/dist apps/api/tsconfig.tsbuildinfo
+
+# Build dependencies first
+pnpm --filter @seo-checker/shared-types build
+pnpm --filter @seo-checker/seo-engine build
+
+# Build API
+cd apps/api
+pnpm build
+
+# Check output
+ls -la dist/

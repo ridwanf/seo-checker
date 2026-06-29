@@ -1,9 +1,7 @@
-import { IsUrl } from 'class-validator';
+import { IsUrl, IsNotEmpty } from 'class-validator';
 
 export class CreateAuditDto {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  @IsUrl({
-    require_protocol: true,
-  })
+  @IsUrl({}, { message: 'Invalid URL format' })
+  @IsNotEmpty({ message: 'URL is required' })
   url!: string;
 }

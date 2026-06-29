@@ -1,10 +1,11 @@
 import { load } from "cheerio";
-import { AuditCheck } from "packages/shared-types/src/audit.js";
-import { SeoRule, SeoRuleContext } from "packages/shared-types/src/rule.js";
+import { AuditCategory, AuditCheck } from '@seo-checker/shared-types';
+import { SeoRule, SeoRuleContext } from '@seo-checker/shared-types';
 
 export class MetaDescriptionLengthRule implements SeoRule {
   id = "meta-description-length";
   name = 'Meta Description Length';
+  category: AuditCategory = 'metadata';
   weight = 10;
   async execute(context: SeoRuleContext): Promise<AuditCheck> {
     const $ = load(context.html);
@@ -17,7 +18,7 @@ export class MetaDescriptionLengthRule implements SeoRule {
       return {
         id: this.id,
         name: this.name,
-        category: 'metadata',
+        category: this.category,
         status: 'fail',
         score: 0,
         maxScore: 10,

@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AuditService } from './audit.service';
-import { CreateAuditDto } from './dto/create-audit.dto';
+import { AuditService } from './audit.service.js';
+import { CreateAuditDto } from './dto/create-audit.dto.js';
 
 @Controller('audits')
 export class AuditController {
@@ -11,6 +11,7 @@ export class AuditController {
 
   @Post()
   async create(@Body() dto: CreateAuditDto) {
-    return this.auditService.test(dto.url);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return this.auditService.create(dto);
   }
 }

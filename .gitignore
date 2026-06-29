@@ -1,1 +1,5 @@
 node_modules
+.turbo
+*/dist/*
+packages/shared-types/dist/*
+packages/seo-engine/dist/*

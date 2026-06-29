@@ -1,8 +1,8 @@
 import { AuditCheck } from "./audit.js";
-
 export interface SeoRuleContext {
   url: string;
   html: string;
+  $: any;
 }
 
 export interface SeoRule {

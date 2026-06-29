@@ -1,4 +1,5 @@
 import {
+  AuditCategory,
   AuditCheck,
   SeoRule,
   SeoRuleContext,
@@ -9,6 +10,7 @@ import { load } from 'cheerio';
 export class MetaDescriptionExistsRule implements SeoRule {
   id = "meta-description-exists";
   name = "Meta Description Exists";
+  category: AuditCategory = "metadata";
   weight = 10;
 
   async execute(
@@ -22,7 +24,7 @@ export class MetaDescriptionExistsRule implements SeoRule {
 
     return {
       id: this.id,
-      category: 'metadata',
+      category: this.category,
       name: this.name,
       status: passed ? 'pass' : 'fail',
       score: passed ? 10 : 0,
