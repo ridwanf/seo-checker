@@ -1,28 +1,20 @@
 import {
   AuditReport,
-  SeoRule,
   AuditCheck,
-  Grade
+  SeoRuleContext,
+  CategoryScore,
+  RuleCategory,
 } from '@seo-checker/shared-types';
-import { TitleExistsRule } from '../rules/title-exists.rule.js';
-import { CanonicalRule } from '../rules/canonical.rule.js';
-import { H1ExistsRule } from '../rules/h1-exists.rule.js';
-import { MetaDescriptionExistsRule } from '../rules/meta-description-exists.rule.js';
-import { MetaDescriptionLengthRule } from '../rules/meta-description-length.rule.js';
-import { TitleLengthRule } from '../rules/title-length.rule.js';
 import * as cheerio from 'cheerio';
+import { RuleRegistry } from '../registry/rule-registry.js';
+import { createAllRules } from '../rules/all-rules.js';
 
 export class SeoEngine {
-  private readonly rules: SeoRule[]
+  private registry: RuleRegistry;
+
   constructor() {
-    this.rules = [
-      new TitleExistsRule(),
-      new CanonicalRule(),
-      new H1ExistsRule(),
-      new MetaDescriptionExistsRule(),
-      new MetaDescriptionLengthRule(),
-      new TitleLengthRule(),
-    ];
+    this.registry = new RuleRegistry();
+    this.registry.registerMany(createAllRules());
   }
 
   async analyze(
@@ -30,65 +22,101 @@ export class SeoEngine {
     html: string
   ): Promise<AuditReport> {
     const $ = cheerio.load(html);
+    const context: SeoRuleContext = { url, html, $ };
 
-    const checks: AuditCheck[] = [];
+    // Run all rules 
+    const checks: AuditCheck[] = await Promise.all(
+      this.registry.getAll().map((rule) => rule.check(context))
+    );
 
-    for (const rule of this.rules) {
-      const result = await rule.execute({ url, html, $ });
-      checks.push(result);
-    }
+    // calculate category scores
+    const categoryScores = this.calculateCategoryScores(checks);
 
-    const earnedScore =
-      checks.reduce(
-        (sum, check) => sum + check.score,
-        0,
-      );
+    // calclulate overall score
+    const totalWeight = this.registry.getTotalWeight();
+    const earnedWeight = this.calculateEarnedWeight(checks);
+    const score = Math.round((earnedWeight / totalWeight) * 100);
 
-    const possibleScore =
-      checks.reduce(
-        (sum, check) => sum + check.maxScore,
-        0,
-      );
-
-    const score =
-      Math.round(
-        (earnedScore / possibleScore) *
-        100,
-      );
-
+    // generated summary
     const summary = {
-      passed:
-        checks.filter(
-          (c) => c.status === 'pass',
-        ).length,
+      total: checks.length,
+      passed: checks.filter((c) => c.passed).length,
+      failed: checks.filter((c) => !c.passed && (c.severity === 'critical' || c.severity === 'major')).length,
+      warnings: checks.filter((c) => !c.passed && c.severity === 'minor').length,
+    };
 
-      warnings:
-        checks.filter(
-          (c) =>
-            c.status === 'warning',
-        ).length,
+    const crawlMetadata = {
+      status: 200, // Example, replace with actual data
+      responseTime: 142, // Example, replace with actual data
+      contentType: 'text/html', // Example, replace with actual data
+      pageSize: html.length,
+      redirects: 1, // Example, replace with actual data
+      robotsTxtFound: true, // Example, replace with actual data
+      sitemapXmlFound: false, // Example, replace with actual data
+    };
 
-      failed:
-        checks.filter(
-          (c) => c.status === 'fail',
-        ).length,
+    const scoreBreakdown = {
+      earnedWeight,
+      totalWeight,
+      percentage: score,
     };
 
     return {
       url,
       score,
-      createdAt: new Date().toISOString(),
-      checks,
+      categoryScores,
+      createdAt: new Date(),
       summary,
-      grade: this.calculateGrade(score),
+      crawl: crawlMetadata,
+      scoreBreakdown
+    };
+  }
+
+  private calculateCategoryScores(checks: AuditCheck[]): CategoryScore[] {
+    const categories = Object.values(RuleCategory);
+    const scores: CategoryScore[] = [];
+
+    for (const category of categories) {
+      const categoryRules = this.registry.getByCategory(category);
+      const categoryChecks = checks.filter((check) =>
+        categoryRules.some((rule) => rule.metadata.id === check.rule)
+      );
+
+      if (categoryChecks.length === 0) continue;
+
+      const totalWeight = categoryRules.reduce((sum, rule) => sum + rule.metadata.weight, 0);
+
+      const earnedWeight = categoryChecks.reduce((sum, check) => {
+        const rule = categoryRules.find((r) => r.metadata.id === check.rule);
+        if (!rule) return sum;
+        return sum + (check.passed ? rule.metadata.weight : 0);
+      }, 0)
+
+      const score = Math.round((earnedWeight / totalWeight) * 100);
+
+      scores.push({
+        category,
+        score,
+        totalWeight,
+        earnedWeight,
+        checks: categoryChecks,
+      });
     }
+
+    return scores.sort((a, b) => b.score - a.score);
   }
-  private calculateGrade(score: number): Grade {
-    if (score >= 90) return "A";
-    if (score >= 80) return "B";
-    if (score >= 70) return "C";
-    if (score >= 60) return "D";
-    return "F";
+
+  private calculateEarnedWeight(checks: AuditCheck[]): number {
+    return checks.reduce((sum, check) => {
+      const rule = this.registry.getById(check.rule);
+      if (!rule) return sum;
+      return sum + (check.passed ? rule.metadata.weight : 0);
+    }, 0);
   }
+
+  getRegistry(): RuleRegistry {
+    return this.registry;
+  }
+
 }
 
