@@ -151,6 +151,10 @@ importers:
         version: 5.9.3
 
   packages/shared-types:
+    dependencies:
+      cheerio:
+        specifier: ^1.0.0
+        version: 1.2.0
     devDependencies:
       typescript:
         specifier: ^5.7.3

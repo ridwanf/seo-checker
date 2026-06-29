@@ -1,5 +1,9 @@
+import { RuleCategory } from "./rule";
+
 export interface AuditCheck {
+  id: string;
   rule: string;
+  category: RuleCategory;
   passed: boolean;
   message: string;
   severity?: 'critical' | 'major' | 'minor';

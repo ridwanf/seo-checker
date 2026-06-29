@@ -3,7 +3,7 @@ import { BaseRule } from '../base-rule';
 
 export class CanonicalRule extends BaseRule {
   metadata = {
-    id: 'canonical-url',
+    id: 'TECH001',
     name: 'Canonical URL',
     description: 'Page should have a canonical URL',
     category: RuleCategory.TECHNICAL,
@@ -12,19 +12,13 @@ export class CanonicalRule extends BaseRule {
 
   check(context: SeoRuleContext) {
     const canonical = context.$('link[rel="canonical"]').attr('href');
-
-    return this.createCheck(
-      !!canonical,
-      canonical
-        ? `Canonical URL is set: ${canonical}`
-        : 'Page is missing a canonical URL',
-      canonical ? undefined : 'major',
-      canonical
-        ? undefined
-        : 'Add a canonical tag in the <head> pointing to the preferred URL.',
-      canonical
-        ? undefined
-        : 'Canonical tags help search engines understand the preferred version of a page.'
-    );
+    return canonical
+      ? this.pass(`Canonical URL is set: ${canonical}`)
+      : this.fail(
+        'Page is missing a canonical URL.',
+        'major',
+        'Add <link rel="canonical" href="https://yourdomain.com/page"> to the <head> section.',
+        'Canonical tags prevent duplicate content issues by telling search engines which URL is the preferred version.'
+      );
   }
 }

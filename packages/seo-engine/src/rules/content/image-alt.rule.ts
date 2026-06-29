@@ -3,7 +3,7 @@ import { BaseRule } from '../base-rule';
 
 export class ImageAltRule extends BaseRule {
   metadata = {
-    id: 'image-alt-text',
+    id: 'CON002',
     name: 'Image Alt Text',
     description: 'All images should have alt text',
     category: RuleCategory.CONTENT,
@@ -15,24 +15,22 @@ export class ImageAltRule extends BaseRule {
     const totalImages = images.length;
 
     if (totalImages === 0) {
-      return this.createCheck(true, 'No images found on page', undefined);
+      return this.pass('No images found on page.');
     }
 
     let missingAlt = 0;
     images.each((_: number, img: any) => {
       const alt = context.$(img).attr('alt');
-      if (!alt || alt.trim() === '') {
-        missingAlt++;
-      }
+      if (alt === undefined || alt.trim() === '') missingAlt++;
     });
 
-    const passed = missingAlt === 0;
-    return this.createCheck(
-      passed,
-      passed
-        ? `All ${totalImages} images have alt text`
-        : `${missingAlt} of ${totalImages} images missing alt text`,
-      passed ? undefined : 'minor'
-    );
+    return missingAlt === 0
+      ? this.pass(`All ${totalImages} images have alt text.`)
+      : this.fail(
+        `${missingAlt} of ${totalImages} images are missing alt text.`,
+        'minor',
+        'Add descriptive alt attributes to all <img> tags.',
+        'Alt text helps search engines understand image content and improves accessibility for visually impaired users.'
+      );
   }
 }

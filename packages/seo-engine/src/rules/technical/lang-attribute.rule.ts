@@ -1,24 +1,24 @@
-import { RuleCategory, SeoRuleContext } from "@seo-checker/shared-types";
-import { BaseRule } from "../base-rule";
+import { SeoRuleContext, RuleCategory } from '@seo-checker/shared-types';
+import { BaseRule } from '../base-rule';
 
 export class LangAttributeRule extends BaseRule {
   metadata = {
-    id: 'html-lang',
-    name: 'Lang Attribute',
-    description: 'Page should have a lang attribute for accessibility and SEO',
+    id: 'TECH003',
+    name: 'HTML Lang Attribute',
+    description: 'HTML tag should have lang attribute',
     category: RuleCategory.TECHNICAL,
-    weight: 8,
+    weight: 7,
   };
 
   check(context: SeoRuleContext) {
     const lang = context.$('html').attr('lang');
-
-    return this.createCheck(
-      !!lang,
-      lang
-        ? `Lang attribute is set: ${lang}`
-        : 'Page is missing a lang attribute for accessibility and SEO',
-      'minor'
-    );
+    return lang
+      ? this.pass(`HTML lang attribute is set to "${lang}".`)
+      : this.fail(
+        'HTML tag is missing the lang attribute.',
+        'minor',
+        'Add a lang attribute to the <html> tag (e.g., <html lang="en">).',
+        'The lang attribute helps search engines serve the correct language version and improves accessibility.'
+      );
   }
 }

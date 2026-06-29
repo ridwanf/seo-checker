@@ -1,14 +1,9 @@
-import {
-  RuleCategory,
-  SeoRuleContext,
-} from '@seo-checker/shared-types';
-
+import { SeoRuleContext, RuleCategory } from '@seo-checker/shared-types';
 import { BaseRule } from '../base-rule';
 
 export class TitleExistsRule extends BaseRule {
-
   metadata = {
-    id: 'title-exists',
+    id: 'META001',
     name: 'Title Tag Exists',
     description: 'Page must have a title tag',
     category: RuleCategory.META_TAGS,
@@ -17,18 +12,13 @@ export class TitleExistsRule extends BaseRule {
 
   check(context: SeoRuleContext) {
     const title = context.$('title').text().trim();
-    return this.createCheck(
-      title.length > 0,
-      title.length > 0
-        ? 'Page has a title tag'
-        : 'Page is missing a title tag',
-      title.length > 0 ? undefined : 'critical',
-      title.length > 0
-        ? undefined
-        : 'Add a <title> tag to the <head> section of the page.',
-      title.length > 0
-        ? undefined
-        : 'The title tag is critical for SEO as it helps search engines understand the page content.'
-    );
+    return title.length > 0
+      ? this.pass('Page has a title tag.')
+      : this.fail(
+        'Page is missing a title tag.',
+        'critical',
+        'Add a <title> tag inside the <head> section of the page.',
+        'The title tag is the most important on-page SEO element. It directly affects rankings and click-through rates.'
+      );
   }
 }

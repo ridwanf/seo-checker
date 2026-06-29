@@ -1,15 +1,9 @@
-import {
-  AuditCheck,
-  RuleCategory,
-  SeoRuleContext,
-} from '@seo-checker/shared-types';
-
+import { SeoRuleContext, RuleCategory } from '@seo-checker/shared-types';
 import { BaseRule } from '../base-rule';
 
-export class H1ExistsRule
-  extends BaseRule {
+export class H1ExistsRule extends BaseRule {
   metadata = {
-    id: 'h1-exists',
+    id: 'CON001',
     name: 'H1 Heading Exists',
     description: 'Page should have exactly one H1 heading',
     category: RuleCategory.CONTENT,
@@ -21,30 +15,26 @@ export class H1ExistsRule
     const count = h1Elements.length;
 
     if (count === 0) {
-      return this.createCheck(
-        false,
-        'Page is missing an H1 heading',
+      return this.fail(
+        'Page is missing an H1 heading.',
         'critical',
-        'Add an H1 heading to the page to describe its main topic.',
-        'The H1 heading is critical for SEO as it helps search engines understand the primary topic of the page.'
+        'Add a single H1 heading that clearly describes the main topic of the page.',
+        'The H1 heading signals the primary topic to search engines and is a key on-page SEO element.'
       );
     }
 
     if (count > 1) {
-      return this.createCheck(
-        false,
-        `Page has ${count} H1 headings, but it should have exactly one.`,
+      return this.fail(
+        `Page has ${count} H1 headings. Only one is recommended.`,
         'major',
-        'Ensure the page has only one H1 heading to avoid confusing search engines.',
-        'Multiple H1 headings can dilute the focus of the page and confuse search engines about its main topic.'
+        'Keep only one H1 heading per page. Demote the others to H2 or H3.',
+        'Multiple H1 headings dilute the relevance signal and can confuse search engines about the primary topic.'
       );
     }
 
     const h1Text = h1Elements.first().text().trim();
-    return this.createCheck(
-      true,
-      `Page has one H1 heading: "${h1Text.substring(0, 50)}${h1Text.length > 50 ? '...' : ''}"`,
-      undefined
+    return this.pass(
+      `Page has one H1 heading: "${h1Text.substring(0, 50)}${h1Text.length > 50 ? '...' : ''}".`
     );
   }
 }

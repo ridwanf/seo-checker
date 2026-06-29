@@ -15,12 +15,12 @@ export class AuditService {
   async test(url: string): Promise<AuditReport> {
     const crawlsResult = await this.crawlerService.crawl(url);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.seoService.analyze(crawlsResult.url, crawlsResult.html);
+    return this.seoService.analyze(crawlsResult);
   }
 
   async create(dto: CreateAuditDto): Promise<AuditReport> {
     const crawlResult = await this.crawlerService.crawl(dto.url);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.seoService.analyze(crawlResult.url, crawlResult.html);
+    return this.seoService.analyze(crawlResult);
   }
 }

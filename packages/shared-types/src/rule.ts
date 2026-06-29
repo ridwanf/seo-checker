@@ -1,8 +1,9 @@
 import { AuditCheck } from "./audit.js";
+import { CheerioAPI } from "cheerio";
+import { CrawlResult } from "./crawler.js";
 export interface SeoRuleContext {
-  url: string;
-  html: string;
-  $: any;
+  crawl: CrawlResult;
+  $: CheerioAPI;
 }
 
 export enum RuleCategory {

@@ -1,12 +1,11 @@
-import { RuleCategory } from '@seo-checker/shared-types';
-import { SeoRuleContext } from '@seo-checker/shared-types';
-import { BaseRule } from "../base-rule";
+import { SeoRuleContext, RuleCategory } from '@seo-checker/shared-types';
+import { BaseRule } from '../base-rule';
 
 export class TitleLengthRule extends BaseRule {
   metadata = {
-    id: 'title-length',
+    id: 'META002',
     name: 'Title Length',
-    description: 'Title should be 30-60 characters',
+    description: 'Title should be between 30 and 60 characters',
     category: RuleCategory.META_TAGS,
     weight: 8,
   };
@@ -16,13 +15,13 @@ export class TitleLengthRule extends BaseRule {
     const length = title.length;
     const isOptimal = length >= 30 && length <= 60;
 
-    return this.createCheck(
-      isOptimal,
-      isOptimal
-        ? `Title length is optimal (${length} characters)`
-        : `Title should be 30-60 characters (current: ${length})`,
-      isOptimal ? undefined : 'minor'
-    );
+    return isOptimal
+      ? this.pass(`Title length is optimal (${length} characters).`)
+      : this.fail(
+        `Title length is ${length} characters. Optimal is 30–60.`,
+        'minor',
+        'Rewrite the title to be between 30 and 60 characters.',
+        'Titles that are too short may not rank for enough keywords. Titles that are too long get truncated in search results.'
+      );
   }
-
 }

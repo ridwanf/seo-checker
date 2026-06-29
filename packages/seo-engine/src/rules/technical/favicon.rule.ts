@@ -1,24 +1,27 @@
-import { AuditCheck, RuleCategory, SeoRuleContext } from "@seo-checker/shared-types";
-import { BaseRule } from "../base-rule";
+import { SeoRuleContext, RuleCategory } from '@seo-checker/shared-types';
+import { BaseRule } from '../base-rule';
 
 export class FaviconRule extends BaseRule {
   metadata = {
-    id: 'favicon',
+    id: 'TECH004',
     name: 'Favicon',
-    description: 'Page should have a favicon for branding and user experience',
+    description: 'Page should have a favicon',
     category: RuleCategory.TECHNICAL,
     weight: 4,
   };
 
-  check(context: SeoRuleContext): AuditCheck | Promise<AuditCheck> {
+  check(context: SeoRuleContext) {
     const favicon =
       context.$('link[rel="icon"]').attr('href') ||
       context.$('link[rel="shortcut icon"]').attr('href');
 
-    return this.createCheck(
-      !!favicon,
-      favicon ? `Favicon found: ${favicon}` : 'No favicon found',
-      'minor'
-    );
+    return favicon
+      ? this.pass(`Favicon found: ${favicon}`)
+      : this.fail(
+        'No favicon found.',
+        'minor',
+        'Add <link rel="icon" href="/favicon.ico"> to the <head> section.',
+        'Favicons improve brand recognition and appear in browser tabs, bookmarks, and search results.'
+      );
   }
 }
