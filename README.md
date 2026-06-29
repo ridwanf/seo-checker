@@ -81,6 +81,7 @@ rm -rf apps/api/dist apps/api/tsconfig.tsbuildinfo
 pnpm --filter @seo-checker/shared-types build
 pnpm --filter @seo-checker/seo-engine build
 
+pnpm --filter @seo-checker/api build
 # Build API
 cd apps/api
 pnpm build

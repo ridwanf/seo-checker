@@ -5,9 +5,23 @@ export interface SeoRuleContext {
   $: any;
 }
 
-export interface SeoRule {
+export enum RuleCategory {
+  META_TAGS = 'meta-tags',
+  CONTENT = 'content',
+  TECHNICAL = 'technical',
+  SOCIAL = 'social',
+  PERFORMANCE = 'performance',
+  ACCESSIBILITY = 'accessibility',
+}
+
+export interface RuleMetadata {
   id: string;
   name: string;
-  weight: number;
-  execute(context: SeoRuleContext): Promise<AuditCheck>;
+  description: string;
+  category: RuleCategory;
+  weight: number; // 1-10, higher = more important
+}
+export interface SeoRule {
+  metadata: RuleMetadata;
+  check(context: SeoRuleContext): AuditCheck | Promise<AuditCheck>;
 }

@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuditService } from './audit.service.js';
 import { CreateAuditDto } from './dto/create-audit.dto.js';
 
-@Controller('audits')
+@Controller('audit')
 export class AuditController {
   // eslint-disable-next-line prettier/prettier
   constructor(
