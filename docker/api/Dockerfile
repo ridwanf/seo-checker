@@ -7,6 +7,7 @@
   FROM base AS deps
   COPY pnpm-workspace.yaml ./
   COPY package.json ./
+  COPY pnpm-lock.yaml ./                                          
   COPY packages/shared-types/package.json ./packages/shared-types/
   COPY packages/seo-engine/package.json ./packages/seo-engine/
   COPY apps/api/package.json ./apps/api/
@@ -31,8 +32,8 @@
   
   ENV NODE_ENV=production
   
-  # Copy only what's needed to run
   COPY --from=builder /app/package.json ./
+  COPY --from=builder /app/pnpm-lock.yaml ./
   COPY --from=builder /app/pnpm-workspace.yaml ./
   COPY --from=builder /app/packages/shared-types/package.json ./packages/shared-types/
   COPY --from=builder /app/packages/shared-types/dist ./packages/shared-types/dist
