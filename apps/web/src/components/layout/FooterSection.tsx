@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const Footer = () => {
-  const [date, setDate] = useState(() => new Date().getFullYear());
+  const [date, _] = useState(() => new Date().getFullYear());
 
   return (
     <footer className="border-t border-border/50 py-12 px-4">
