@@ -1,0 +1,22 @@
+services:
+  api:
+    image: ghcr.io/ridwanf/seo-checker-api:${IMAGE_TAG:-latest}
+    container_name: seo-checker-api
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  web:
+    image: ghcr.io/ridwanf/seo-checker-web:${IMAGE_TAG:-latest}
+    container_name: seo-checker-web
+    ports:
+      - "3002:80"
+    restart: unless-stopped
