@@ -7,6 +7,7 @@
   FROM base AS deps
   COPY pnpm-workspace.yaml ./
   COPY package.json ./
+  COPY pnpm-lock.yaml ./
   COPY packages/shared-types/package.json ./packages/shared-types/
   COPY apps/web/package.json ./apps/web/
   
@@ -21,11 +22,10 @@
   RUN pnpm --filter @seo-checker/shared-types build
   RUN pnpm --filter @seo-checker/web build
   
-  # ---- Runner (Nginx serves static files) ----
+  # ---- Runner ----
   FROM nginx:alpine AS runner
   
   COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
-  COPY docker/web/nginx.conf /etc/nginx/conf.d/default.conf
   
   EXPOSE 80
   
