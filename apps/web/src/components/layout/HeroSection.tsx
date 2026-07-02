@@ -44,10 +44,21 @@ export function HeroSection() {
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             Professional SEO Analysis
           </span>
+
+          {/* ✅ Single clean H1 for SEO */}
           <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-tight">
-            Audit Your Website
-            <span className="glow-text block">in Seconds</span>
+            Audit Your Website in Seconds
           </h1>
+
+          {/* Visual styling separate from H1 */}
+          <p className="text-2xl md:text-3xl glow-text font-semibold">
+            Free SEO Analysis Tool
+          </p>
+
+          <p className="text-muted-foreground text-lg max-w-lg mx-auto">
+            Get a full SEO report with scores, recommendations, and
+            crawl insights — all in one place.
+          </p>
         </div>
 
         {/* React 19 Form with action */}
