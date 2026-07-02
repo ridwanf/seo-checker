@@ -1,18 +1,11 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/contexts/theme.context";
 
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "light") {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      return false;
-    }
-    return true;
-  });
+  const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -20,19 +13,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  const toggleTheme = () => {
-    const next = !isDark;
-    setIsDark(next);
-    if (next) {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-    }
-  };
 
   return (
     <nav
