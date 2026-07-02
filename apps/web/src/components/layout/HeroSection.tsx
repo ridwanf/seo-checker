@@ -48,10 +48,6 @@ export function HeroSection() {
             Audit Your Website
             <span className="glow-text block">in Seconds</span>
           </h1>
-          <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-            Get a full SEO report with scores, recommendations, and
-            crawl insights — all in one place.
-          </p>
         </div>
 
         {/* React 19 Form with action */}
