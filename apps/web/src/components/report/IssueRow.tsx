@@ -75,6 +75,63 @@ export function IssueRow({ check }: IssueRowProps) {
               </p>
             </div>
           )}
+
+          {/* Fix Examples */}
+          {check.fixExamples && check.fixExamples.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
+                Fix Examples ({check.fixExamples.length})
+              </p>
+              <div className="space-y-3">
+                {check.fixExamples.map((example, i) => (
+                  <div
+                    key={i}
+                    className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden"
+                  >
+                    {/* Title */}
+                    <div className="px-4 py-2 bg-zinc-800/40 border-b border-zinc-800">
+                      <p className="text-sm font-medium text-white">
+                        {i + 1}. {example.title}
+                      </p>
+                    </div>
+
+                    <div className="p-4 space-y-3">
+                      {/* Before */}
+                      {example.before && (
+                        <div>
+                          <p className="text-xs font-semibold text-red-400 uppercase tracking-wider mb-1">
+                            ❌ Before
+                          </p>
+                          <pre className="text-xs text-zinc-300 bg-black/40 border border-zinc-800 rounded-lg p-3 overflow-x-auto leading-relaxed font-mono">
+                            {example.before}
+                          </pre>
+                        </div>
+                      )}
+
+                      {/* After */}
+                      {example.after && (
+                        <div>
+                          <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
+                            ✅ After
+                          </p>
+                          <pre className="text-xs text-zinc-300 bg-black/40 border border-zinc-800 rounded-lg p-3 overflow-x-auto leading-relaxed font-mono">
+                            {example.after}
+                          </pre>
+                        </div>
+                      )}
+
+                      {/* Explanation */}
+                      {example.explanation && (
+                        <p className="text-xs text-zinc-400 leading-relaxed">
+                          💡 {example.explanation}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

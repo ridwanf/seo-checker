@@ -9,15 +9,18 @@ import {
 } from '@seo-checker/shared-types';
 import { RuleRegistry } from '../registry/rule-registry';
 import { createAllRules } from '../rules/all-rules';
+import { RecommendationEngine } from '../recommendations/recommendation-engine';
 
 const VERSION = '1.0';
 
 export class SeoEngine {
   private registry: RuleRegistry;
+  private recEngine: RecommendationEngine;
 
   constructor() {
     this.registry = new RuleRegistry();
     this.registry.registerMany(createAllRules());
+    this.recEngine = new RecommendationEngine();
   }
 
   async analyze(crawl: CrawlResult): Promise<AuditReport> {
@@ -25,9 +28,16 @@ export class SeoEngine {
     const context: SeoRuleContext = { crawl, $ };
 
     // Run all rules
-    const checks: AuditCheck[] = await Promise.all(
+    let checks: AuditCheck[] = await Promise.all(
       this.registry.getAll().map((rule) => rule.check(context))
     );
+
+    // Enrich failed checks with AI-generated fix examples
+    checks = checks.map((check) => {
+      if (check.passed) return check;
+      const fixExamples = this.recEngine.generate(check, context);
+      return fixExamples ? { ...check, fixExamples } : check;
+    });
 
     // Calculate category scores
     const categories = this.buildCategories(checks);
