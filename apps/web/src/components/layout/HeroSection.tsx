@@ -1,5 +1,4 @@
 import { useRef, useTransition } from 'react'
-import heroBg from '@/assets/hero-bg.png'
 import { useAuditStore } from '@/stores/audit.store'
 import { Spinner } from '@/components/common/Spinner'
 import { useAudit } from '@/hooks/userAudit'
@@ -24,14 +23,14 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative flex justify-center overflow-hidden section-padding pt-32">
+    <section className="relative flex justify-center overflow-hidden section-padding pt-64">
       {/* Background */}
       <div className="absolute inset-0">
-        <img
+        {/* <img
           src={heroBg}
           alt=""
           className="w-full h-full object-cover opacity-30"
-        />
+        /> */}
       </div>
 
       {/* Glow orb */}

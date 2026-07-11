@@ -8,7 +8,7 @@ import { IssueTable } from '@/components/report/IssueTable'
 import { Spinner } from '@/components/common/Spinner'
 
 export default function App() {
-  const { report, isLoading, error } = useAuditStore()
+  const { report, isLoading, error, message } = useAuditStore()
   const allChecks = report?.categories.flatMap((c) => c.checks) ?? []
 
   return (
@@ -33,7 +33,7 @@ export default function App() {
       {error && !isLoading && (
         <div className="max-w-2xl mx-auto px-6 py-4">
           <div className="bg-destructive/10 border border-destructive/20 rounded-xl px-6 py-4">
-            <p className="text-destructive text-sm">⚠️ {error}</p>
+            <p className="text-destructive text-sm">⚠️ {message || error}</p>
           </div>
         </div>
       )}

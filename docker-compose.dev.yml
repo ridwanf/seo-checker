@@ -21,3 +21,16 @@ services:
     depends_on:
       - api
     restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: seo-checker-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+volumes:
+  redis_data:

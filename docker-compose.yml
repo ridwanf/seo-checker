@@ -1,4 +1,18 @@
+version: '3.8'
+
 services:
+  redis:
+    image: redis:7-alpine
+    container_name: seo-checker-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
   api:
     image: ghcr.io/ridwanf/seo-checker-api:${IMAGE_TAG:-latest}
     container_name: seo-checker-api
@@ -7,6 +21,10 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - REDIS_HOST=redis
+    depends_on:
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
@@ -20,3 +38,7 @@ services:
     ports:
       - "3002:80"
     restart: unless-stopped
+
+
+volumes:
+  redis_data:
