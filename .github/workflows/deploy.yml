@@ -1,3 +1,4 @@
+
 name: CI/CD Pipeline
 
 on:
@@ -141,6 +142,15 @@ jobs:
             echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io \
               -u "${{ github.repository_owner }}" \
               --password-stdin
+            
+            # Write .env file from GitHub secrets
+            cat > .env << EOF
+            NODE_ENV=production
+            PORT=3000
+            REDIS_HOST=redis
+            REDIS_PORT=6379
+            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+            EOF
 
             export IMAGE_TAG=${{ steps.tag.outputs.tag }}
 

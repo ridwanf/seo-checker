@@ -3,9 +3,10 @@ import { AuditController } from './audit.controller.js';
 import { AuditService } from './audit.service.js';
 import { CrawlerModule } from '../crawler/crawler.module.js';
 import { SeoModule } from '../seo/seo.module.js';
+import { RedisModule } from '../redis/redis.module.js';
 
 @Module({
-  imports: [CrawlerModule, SeoModule],
+  imports: [CrawlerModule, SeoModule, RedisModule],
   controllers: [AuditController],
   providers: [AuditService],
 })

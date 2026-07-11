@@ -5,9 +5,10 @@ import { AuditModule } from './audit/audit.module.js';
 import { CrawlerModule } from './crawler/crawler.module.js';
 import { SeoModule } from './seo/seo.module.js';
 import { HealthModule } from './health/health.module.js';
+import { RedisModule } from './redis/redis.module.js';
 
 @Module({
-  imports: [AuditModule, CrawlerModule, SeoModule, HealthModule],
+  imports: [RedisModule, AuditModule, CrawlerModule, SeoModule, HealthModule],
   controllers: [AppController],
   providers: [AppService],
 })
