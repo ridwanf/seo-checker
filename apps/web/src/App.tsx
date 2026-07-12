@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { HeroSection } from '@/components/layout/HeroSection'
 import { useAuditStore } from '@/stores/audit.store'
 import { ScoreCard } from '@/components/dashboard/ScoreCard'
@@ -22,31 +23,49 @@ export default function App() {
 
       {/* Loading */}
       {isLoading && (
-        <div className="flex flex-col items-center gap-4 py-24">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center gap-4 py-24"
+        >
           <Spinner size="lg" />
-          <div className="text-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-center"
+          >
             <p className="text-foreground font-medium">Crawling and analyzing...</p>
             <p className="text-muted-foreground text-sm mt-1">
               Fetching HTML, robots.txt, and sitemap.xml
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
       {/* Error */}
       {error && !isLoading && (
-        <div className="max-w-2xl mx-auto px-6 py-4">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="max-w-2xl mx-auto px-6 py-4"
+        >
           <div className="bg-destructive/10 border border-destructive/20 rounded-xl px-6 py-4">
             <p className="text-destructive text-sm">⚠️ {message || error}</p>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Report */}
       {report && !isLoading && (
         <div className="max-w-6xl mx-auto px-6 py-10 space-y-6">
           {/* Analyzed URL */}
-          <div className="flex items-center justify-between py-2 border-b border-border">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center justify-between py-2 border-b border-border"
+          >
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">Analyzed</span>
               <a
@@ -61,18 +80,28 @@ export default function App() {
             <span className="text-xs text-muted-foreground">
               {new Date(report.createdAt).toLocaleString()}
             </span>
-          </div>
+          </motion.div>
 
           {/* Row 1: Score + Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
             <ScoreCard score={report.score} summary={report.summary} />
             <div className="md:col-span-2">
               <CategoryCard categories={report.categories} />
             </div>
-          </div>
+          </motion.div>
 
           {/* Row 2: Issues + Sidebar */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
             <div className="md:col-span-2">
               <IssueTable checks={allChecks} />
             </div>
@@ -80,7 +109,7 @@ export default function App() {
               <CrawlInfo crawl={report.crawl} />
               <ScoreBreakdown scoreBreakdown={report.scoreBreakdown} />
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </main>
