@@ -11,10 +11,14 @@ export default function App() {
   const { report, isLoading, error, message } = useAuditStore()
   const allChecks = report?.categories.flatMap((c) => c.checks) ?? []
 
+  const isEmpty = !report && !isLoading && !error
+
   return (
-    <main>
+    <main className="flex-1 flex flex-col">
       {/* Hero with URL form */}
-      <HeroSection />
+      <div className={isEmpty ? 'flex-1 flex flex-col justify-center' : ''}>
+        <HeroSection />
+      </div>
 
       {/* Loading */}
       {isLoading && (

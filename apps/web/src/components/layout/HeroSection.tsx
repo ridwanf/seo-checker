@@ -23,7 +23,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative flex justify-center overflow-hidden section-padding pt-4">
+    <section className="relative flex justify-center overflow-hidden py-20 md:py-28">
       {/* Background */}
       <div className="absolute inset-0">
         {/* <img
