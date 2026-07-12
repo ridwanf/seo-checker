@@ -5,7 +5,7 @@ import Footer from "./components/layout/FooterSection";
 
 const rootRoute = createRootRoute({
   component: () => (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-screen flex flex-col bg-background text-foreground py-4 px-4">
       <Navbar />
       <Outlet />
       <Footer />

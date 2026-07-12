@@ -4,8 +4,8 @@ const Footer = () => {
   const [date, _] = useState(() => new Date().getFullYear());
 
   return (
-    <footer className="border-t border-border/50 py-4 px-4">
-      <div className="container mx-auto  flex flex-wrap gap-4 justify-between">
+    <footer className="border-t border-border/50 mt-4">
+      <div className="container mx-auto  flex flex-wrap gap-4 justify-between p-4">
         <div>
           <span className="text-lg font-bold glow-text">SEO-Checker</span>
           <p className="text-sm text-muted-foreground mt-2">
