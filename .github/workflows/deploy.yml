@@ -79,23 +79,8 @@ jobs:
         run: |
           pnpm --filter @seo-checker/shared-types build
           pnpm --filter @seo-checker/seo-engine build
-
-      - name: Start Redis
-        run: |
-          docker run -d -p 6379:6379 redis:7-alpine
-
-      - name: Start API
-        run: |
-          pnpm --filter @seo-checker/api build
-          pnpm --filter @seo-checker/api start &
-          npx wait-on http://localhost:3000/health --timeout 30000
-        env:
-          NODE_ENV: test
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
-
       - name: Run E2E Tests
-        run: pnpm --filter @seo-checker/web test:e2e
+        run: pnpm --filter @seo-checker/web test:e2e --project=chromium
         env:
           CI: true
 
