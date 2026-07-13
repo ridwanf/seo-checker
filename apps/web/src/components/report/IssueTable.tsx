@@ -21,8 +21,11 @@ interface IssueTableProps {
 
 const columnHelper = createColumnHelper<AuditCheck>()
 
-const severityOrder = { critical: 0, major: 1, minor: 2, undefined: 3 }
-
+const severityOrder: Record<string, number> = {
+  critical: 0,
+  major: 1,
+  minor: 2,
+}
 const severityBadge: Record<string, string> = {
   critical: 'bg-red-500/10 text-red-400 border border-red-500/20',
   major: 'bg-orange-500/10 text-orange-400 border border-orange-500/20',
@@ -85,7 +88,7 @@ export function IssueTable({ checks }: IssueTableProps) {
           className="flex items-center gap-1 hover:text-white transition-colors"
           onClick={() => column.toggleSorting()}
         >
-          Rule
+          RULE
           {column.getIsSorted() === 'asc' ? (
             <ChevronUp className="h-3 w-3" />
           ) : column.getIsSorted() === 'desc' ? (
@@ -113,7 +116,7 @@ export function IssueTable({ checks }: IssueTableProps) {
           className="flex items-center gap-1 hover:text-white transition-colors"
           onClick={() => column.toggleSorting()}
         >
-          Severity
+          SEVERITY
           {column.getIsSorted() === 'asc' ? (
             <ChevronUp className="h-3 w-3" />
           ) : column.getIsSorted() === 'desc' ? (
@@ -133,8 +136,12 @@ export function IssueTable({ checks }: IssueTableProps) {
         )
       },
       sortingFn: (a, b) => {
-        const aOrder = severityOrder[a.original.severity ?? 'undefined']
-        const bOrder = severityOrder[b.original.severity ?? 'undefined']
+        const aOrder = a.original.severity !== undefined
+          ? severityOrder[a.original.severity]
+          : 999
+        const bOrder = b.original.severity !== undefined
+          ? severityOrder[b.original.severity]
+          : 999
         return aOrder - bOrder
       },
     }),
@@ -175,6 +182,9 @@ export function IssueTable({ checks }: IssueTableProps) {
         .toLowerCase()
         .includes(String(filterValue).toLowerCase())
     },
+    initialState: {
+      sorting: [{ id: 'severity', desc: false }],
+    },
   })
 
 
@@ -186,7 +196,9 @@ export function IssueTable({ checks }: IssueTableProps) {
       className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden"
     >
       {/* Header */}
-      <div className="flex flex-col gap-3 px-4 py-3 border-b border-zinc-800 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        data-testid="issues-table"
+        className="flex flex-col gap-3 px-4 py-3 border-b border-zinc-800 sm:flex-row sm:items-center sm:justify-between">
         {/* Tabs */}
         <div className="flex items-center gap-1">
           {tabs.map((tab) => (

@@ -1,4 +1,4 @@
-import { useRef, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { useAuditStore } from '@/stores/audit.store'
 import { Spinner } from '@/components/common/Spinner'
 import { useAudit } from '@/hooks/userAudit'
@@ -6,15 +6,23 @@ import { useAudit } from '@/hooks/userAudit'
 export function HeroSection() {
   const formRef = useRef<HTMLFormElement>(null)
   const [isPending, startTransition] = useTransition()
+  const [errorrMessage, setErrorrMessage] = useState('')
   const { mutate: analyze } = useAudit()
   const { isLoading } = useAuditStore()
 
   const loading = isLoading || isPending
 
   // React 19 - useActionState for form handling
-  async function handleAction(formData: FormData) {
+  async function handleAction(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
     const url = formData.get('url') as string
-    if (!url?.trim()) return
+    const error = validateUrl(url)
+    if (error) {
+      setErrorrMessage(error)
+      return
+    }
+    setErrorrMessage('')
 
     startTransition(() => {
       analyze(url.trim())
@@ -22,15 +30,27 @@ export function HeroSection() {
     })
   }
 
+  const validateUrl = (url: string): string => {
+    if (!url.trim()) {
+      return 'URL is required.'
+    }
+
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return 'URL must start with http:// or https://'
+    }
+
+    try {
+      new URL(url)
+      return ''
+    } catch {
+      return 'Invalid URL format.'
+    }
+  }
+
   return (
     <section className="relative flex justify-center overflow-hidden px-4 py-20 md:py-28">
       {/* Background */}
       <div className="absolute inset-0">
-        {/* <img
-          src={heroBg}
-          alt=""
-          className="w-full h-full object-cover opacity-30"
-        /> */}
       </div>
 
       {/* Glow orb */}
@@ -63,43 +83,56 @@ export function HeroSection() {
         {/* React 19 Form with action */}
         <form
           ref={formRef}
-          action={handleAction}
-          className="relative flex flex-wrap items-center gap-2 mt-8"
+          onSubmit={handleAction}
+          noValidate
+
         >
-          <input
-            name="url"
-            type="url"
-            placeholder="https://example.com"
-            required
-            disabled={loading}
-            className="flex-1 px-5 py-4 rounded-xl border border-border bg-card/60 backdrop-blur-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 transition-all"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="
+          <div
+            className="relative flex flex-wrap items-center gap-2 mt-8">
+
+            <input
+              name="url"
+              type="url"
+              placeholder="https://example.com"
+              required
+              disabled={loading}
+              className="flex-1 px-5 py-4 rounded-xl border border-border bg-card/60 backdrop-blur-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 transition-all"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="
             w-full
 
             md:w-auto
             glow-button 
             shrink-0 flex items-center 
             gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-          >
-            <div className='flex align-middle justify-center w-full'>
+            >
+              <div className='flex align-middle justify-center w-full'>
 
-              {loading ? (
-                <>
-                  <Spinner size="sm" />
-                  <span>Analyzing...</span>
-                </>
-              ) : (
-                <>
-                  <span>Analyze</span>
-                  <span>→</span>
-                </>
-              )}
-            </div>
-          </button>
+                {loading ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Analyzing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Analyze</span>
+                    <span>→</span>
+                  </>
+                )}
+              </div>
+            </button>
+          </div>
+
+          {errorrMessage && (
+            <div className="mt-4 px-6 py-4">
+              <p className="text-destructive text-sm">⚠️ {errorrMessage}</p>
+            </div>)
+
+          }
+
         </form>
 
         {/* Trust signals */}

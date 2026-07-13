@@ -42,7 +42,7 @@ export function CategoryCard({ categories }: CategoryCardProps) {
   }
 
   return (
-    <Card>
+    <Card data-testid="category-chart">
       <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-5">
         Category Scores
       </h2>
