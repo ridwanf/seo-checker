@@ -4,3 +4,5 @@ node_modules
 packages/shared-types/dist/*
 packages/seo-engine/dist/*
 */tsconfig.tsbuildinfo
+apps/web/playwright-report/*
+apps/web/test-results/*

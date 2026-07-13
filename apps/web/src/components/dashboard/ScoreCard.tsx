@@ -67,21 +67,21 @@ export function ScoreCard({ score, summary }: ScoreCardProps) {
         }}
       />
 
-      <span className={`text-xl font-bold ${getScoreGrade(score).color}`}>
+      <span data-testid="summary-total" className={`text-xl font-bold ${getScoreGrade(score).color}`}>
         Grade {grade}
       </span>
 
       {/* Summary stats */}
       <div className="w-full grid grid-cols-3 gap-2 text-center">
-        <div className="bg-zinc-800 rounded-lg p-3">
+        <div className="bg-zinc-800 rounded-lg p-3" data-testid="summary-passed" >
           <div className="text-emerald-400 font-bold text-xl">{summary.passed}</div>
           <div className="text-zinc-500 text-xs">Passed</div>
         </div>
-        <div className="bg-zinc-800 rounded-lg p-3">
+        <div className="bg-zinc-800 rounded-lg p-3" data-testid="summary-failed">
           <div className="text-red-400 font-bold text-xl">{summary.failed}</div>
           <div className="text-zinc-500 text-xs">Failed</div>
         </div>
-        <div className="bg-zinc-800 rounded-lg p-3">
+        <div className="bg-zinc-800 rounded-lg p-3" data-testid="summary-warnings">
           <div className="text-yellow-400 font-bold text-xl">{summary.warnings}</div>
           <div className="text-zinc-500 text-xs">Warnings</div>
         </div>
