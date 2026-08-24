@@ -27,7 +27,7 @@
   
   # ---- Runner ----
   FROM node:22-alpine AS runner
-  RUN npm install -g pnpm
+  RUN npm install -g pnpm@10.0.0
   WORKDIR /app
   
   ENV NODE_ENV=production
