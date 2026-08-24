@@ -8,6 +8,7 @@ import { ScoreBreakdown } from '@/components/dashboard/ScoreBreakdown'
 import { IssueTable } from '@/components/report/IssueTable'
 import { Spinner } from '@/components/common/Spinner'
 import { useEffect, useRef } from 'react'
+import { ExportActions } from './components/report/ExportActions'
 
 export default function App() {
   const { report, isLoading, error, message } = useAuditStore()
@@ -70,12 +71,7 @@ export default function App() {
         {report && !isLoading && (
           <div className="max-w-6xl mx-auto px-6 py-10 space-y-6">
             {/* Analyzed URL */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center justify-between py-2 border-b border-border"
-            >
+            <div className="flex items-center justify-between py-2 border-b border-border">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Analyzed</span>
                 <a
@@ -87,10 +83,13 @@ export default function App() {
                   {report.url}
                 </a>
               </div>
-              <span className="text-xs text-muted-foreground">
-                {new Date(report.createdAt).toLocaleString()}
-              </span>
-            </motion.div>
+              <div className="flex items-center gap-4">
+                <span className="text-xs text-muted-foreground hidden sm:inline">
+                  {new Date(report.createdAt).toLocaleString()}
+                </span>
+                <ExportActions url={report.url} report={report} />
+              </div>
+            </div>
 
             {/* Row 1: Score + Categories */}
             <motion.div
