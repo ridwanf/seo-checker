@@ -9,6 +9,7 @@ import { RedisModule } from '../redis/redis.module.js';
   imports: [CrawlerModule, SeoModule, RedisModule],
   controllers: [AuditController],
   providers: [AuditService],
+  exports: [AuditService]
 })
 // eslint-disable-next-line prettier/prettier
 export class AuditModule { }

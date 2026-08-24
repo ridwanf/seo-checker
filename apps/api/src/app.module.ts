@@ -6,9 +6,10 @@ import { CrawlerModule } from './crawler/crawler.module.js';
 import { SeoModule } from './seo/seo.module.js';
 import { HealthModule } from './health/health.module.js';
 import { RedisModule } from './redis/redis.module.js';
+import { ReportsModule } from './reports/reports.module.js';
 
 @Module({
-  imports: [RedisModule, AuditModule, CrawlerModule, SeoModule, HealthModule],
+  imports: [RedisModule, AuditModule, CrawlerModule, SeoModule, HealthModule, ReportsModule],
   controllers: [AppController],
   providers: [AppService],
 })
